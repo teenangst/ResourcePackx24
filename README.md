@@ -14,3 +14,4 @@ Tool to allow easier exporting of 24x24 MineCraft resource packs in 1.17
 - `pack.lock` is there to track file changes while the application has been turned off. Don't edit, but you can delete it and restart to force a full refresh.
 - This may not always work with every image editing program because they can use different methods to save files but this should suit most.
 - The input and output directories should be the root folder for the resource pack. For instance `...\.minecraft\resourcepacks\my-resource-pack-24` and `...\.minecraft\resourcepacks\my-resource-pack-24-128`.
+- Closing the application with `ctrl+c` is recommended as it will ensure the up-to-date `pack.lock` file is saved. Nothing should break if closing by other means, it just may result in actions being repeated.
