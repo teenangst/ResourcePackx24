@@ -18,7 +18,6 @@ let get_output_filename (file:string) = Path.Combine(config.desintation, get_cut
 let rec discover_files (directory:string):PackLock =
   let files =
     Directory.GetFiles directory
-    //|> Array.filter(fun file -> file <> "pack.lock")
     |> Array.map(fun file ->
       let file_info = FileInfo(file)
       (get_cutdown_filename file, (NodeType.File, file_info.LastWriteTimeUtc))
@@ -48,19 +47,6 @@ let mutable pack_lock:PackLockMap = Map.empty
 let save_pack_lock directory =
   File.WriteAllText(Path.Combine(directory, "pack.lock"), Json.serialize pack_lock)
 
-(*let save_thread =
-  new Thread(new ThreadStart(fun () ->
-    Thread.Sleep 1000
-    printfn "Saving pack.lock"
-    save_pack_lock config.source
-  ))
-
-let rec initiate_save_throttle () =
-  try
-    save_thread.Start()
-  with
-  | _ -> ()*)
-
 let fetch_pack_lock directory:PackLockMap =
   if pack_lock.Count = 0 then
     let uri = (Path.Combine(directory, "pack.lock"))
@@ -85,12 +71,9 @@ let modify_pack_lock directory file file_type date =
     pack_lock <-
       pack_lock.Add(file, (file_type, date))
 
-  //initiate_save_throttle ()
-
 let remove_from_pack_lock directory file =
   if pack_lock.Count = 0 then fetch_new_pack_lock directory |> ignore
   if pack_lock.ContainsKey file then
     pack_lock <-
       pack_lock
       |> Map.filter(fun k _ -> k <> file)
-    //initiate_save_throttle ()

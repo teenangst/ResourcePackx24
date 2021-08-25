@@ -106,7 +106,6 @@ let delete_directory uri =
       Directory.Delete k
   )
 
-
 let a_in_b (a:PackLockMap) (b:PackLockMap):PackLockMap =
   b |> Map.filter(fun k _ ->
     a.ContainsKey k
@@ -119,8 +118,6 @@ let a_not_in_b (a:PackLockMap) (b:PackLockMap):PackLockMap =
 let init () =
   let pack_lock = fetch_pack_lock config.source
   let new_pack_lock = fetch_new_pack_lock config.source
-
-  //printfn "Directories: %i" (pack_lock |> Map.filter(fun _ (t,_) -> t = NodeType.Directory)).Count
 
   let additions = a_not_in_b pack_lock new_pack_lock
   let removals = a_not_in_b new_pack_lock pack_lock
@@ -166,19 +163,6 @@ let watch_directory_for_changes pack_directory changed created deleted renamed =
   
   watcher.EnableRaisingEvents <- true
 
-(*
-  - File created /
-  - Directory created /
-  - Directory pasted with contents /
-  - File deleted /
-  - Directory deleted /
-  - Directory deleted with contents /
-  - File renamed /
-  - Directory renamed /
-  - File changed
-  - Directory contents changed
-*)
-
 let EXTENSION_BLOCKLIST = [
   ".pdn";
   ".pdnSave";
@@ -194,8 +178,6 @@ let is_blocked_filetype uri =
 let on_changed _ (e:FileSystemEventArgs) =
   if is_blocked_filetype e.FullPath then ()
   elif Directory.Exists e.FullPath then
-    //get_cutdown_filename e.FullPath
-    //|> colorprintfn "$magenta[Updated directory] %s"
 
     modify_pack_lock config.source (get_cutdown_filename e.FullPath) NodeType.Directory (DirectoryInfo(e.FullPath).LastWriteTimeUtc)
   elif e.Name <> "pack.lock" && File.Exists e.FullPath then
