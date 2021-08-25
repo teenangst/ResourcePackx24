@@ -50,7 +50,7 @@ let to_bool str = if str = "true" then true else false
 let input_config ():Config =
   let cfg = {
     source=fetch_input "Directory of the x24 pack" InputValidation.DirectoryPath;
-    desintation=fetch_input "Directory for .minecraft/resourcepacks" InputValidation.DirectoryPath;
+    desintation=fetch_input "Directory for output pack" InputValidation.DirectoryPath;
     output_size=fetch_input "Output size" InputValidation.Float |> float;
     skip_check=fetch_input "Lock in these settings (y/n). Edit config.json to undo." InputValidation.Bool |> to_bool;
   }
