@@ -1,6 +1,6 @@
 # ResourcePackx24
 
-Tool to allow easier exporting of 24x24 MineCraft resource packs in 1.17
+Tool to allow easier exporting of 24x24 items in MineCraft resource packs for 1.17
 
 ## How to use
 
